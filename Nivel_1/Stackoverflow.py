@@ -21,3 +21,13 @@ for questions in Summary:
     print(titulo)
     print(descripcion)
 
+
+#Ventaja Libreria bs4
+
+for questions in Summary:
+    elemento_texto = questions.find('h3')
+    titulo = elemento_texto.text
+    descripcion = elemento_texto.find_next_sibling('div').text
+    descripcion = descripcion.replace('\n','').replace('\r','').strip()
+    print(titulo)
+    print(descripcion)
