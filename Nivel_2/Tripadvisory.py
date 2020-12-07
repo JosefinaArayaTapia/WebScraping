@@ -7,6 +7,7 @@ from scrapy.selector import Selector
 from scrapy.loader import ItemLoader
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders.crawl import Rule
+from scrapy.loader.processors import MapCompose
 
 
 class Hotel(Item):
@@ -32,12 +33,18 @@ class TripAdvisory(CrawlSpider):  #Cuando es Spider Vertical u Horizatonal
       ),
 
   )
+  def quitarSimboloPeso(self,texto):
+      nuevoText=texto.replace("$","")
+      return nuevoText
+
 
   def parse_hotel(self, response):
       sel= Selector(response)
       item = ItemLoader(Hotel(),sel)
       item.add_xpath('Nombre','.//h1[@id="HEADING"]/text()')
-      item.add_xpath('Precio','.//div[@id="taplc_resp_hr_atf_meta_component_0"]/div/div/div[1]/div/div/div[2]/div[1]/div/text()')
+      item.add_xpath('Precio',
+        './/div[@id="taplc_resp_hr_atf_meta_component_0"]/div/div/div[1]/div/div/div[2]/div[1]/div/text()',
+        MapCompose(self.quitarSimboloPeso))
       item.add_xpath('Descripcion','.//div[@id="ABOUT_TAB"]/div[2]/div[1]/div[7]/div[1]/div[1]/div/p/text()')
       item.add_xpath('Comodidades','.//div[contains(@data-test-target, "amenity_text")]/text()')
 
