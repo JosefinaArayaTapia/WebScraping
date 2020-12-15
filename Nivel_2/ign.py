@@ -94,7 +94,7 @@ class IGNSpider(CrawlSpider):  # Cuando es Spider Vertical u Horizatonal
         item = ItemLoader(Reviews(), response)
         item.add_xpath('Titulo', './/div[@class="article-headline"]/h1/text()')
         item.add_xpath(
-            'Calificacion', './/div[@class="review"]/div/span/span/text()')
+            'Calificacion', '//span[@class="side-wrapper side-wrapper hexagon-content"]/text()')
 
         yield item.load_item()
 
